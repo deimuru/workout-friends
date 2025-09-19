@@ -1,0 +1,203 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 50px;
+}
+
+.container {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+}
+
+h1 {
+    color: #1976D2; /* 파란색으로 변경 */
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5em;
+    margin-top: 0;
+}
+
+h2, h3 {
+    color: #555;
+}
+
+#auth-section, #main-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+    background-color: #2196F3; /* 파란색으로 변경 */
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #1976D2; /* 더 진한 파란색으로 변경 */
+}
+
+#find-video-button, #complete-button {
+    margin-top: 10px;
+}
+
+#video-list-display, #video-detail-display, #recommended-workout, #records-section {
+    text-align: left;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.video-list-item-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.video-list-item-card:hover {
+    background-color: #eee;
+}
+
+.video-list-item-card h4 {
+    margin: 0;
+    font-weight: normal;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.video-embed {
+    width: 100%;
+    height: 315px;
+    border: none;
+    border-radius: 8px;
+}
+
+.small-logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: auto;
+    font-size: 0.8em;
+    padding: 5px 10px;
+    background-color: #f44336;
+}
+
+.small-logout-btn:hover {
+    background-color: #d32f2f;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 20px 0;
+}
+
+#streak-count {
+    font-size: 2em;
+    font-weight: bold;
+    color: #f9a825;
+}
+
+#calendar-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+#calendar-container th, #calendar-container td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+#calendar-container th {
+    background-color: #eee;
+}
+
+#calendar-container td.completed {
+    background-color: #d4edda;
+    font-weight: bold;
+}
+
+/* 추가된 운동 선택 기능 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 50px;
+}
+
+.container {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+}
+
+h1 {
+    color: #1976D2;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5em;
+    margin-top: 0;
+}
+
+h2, h3 {
+    color: #555;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.video-embed {
+    width: 100%;
+    height: 315px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+}
