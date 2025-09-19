@@ -88,8 +88,7 @@ function createVideoDetailHTML(video) {
     if (!videoId) return `<p>잘못된 유튜브 주소입니다.</p>`;
     
     return `
-        <h4>${video.title}</h4>
-        <p>${video.category || ''} ${video.level || ''} ${video.length ? video.length + '분' : ''}</p>
+       <h5><strong>${"오늘의 운동"} : ${video.category || ''}${video.length ? ' /' : ''} </strong> ${video.title}</h5>
         <iframe class="video-embed" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
         <br>
     `;
@@ -129,6 +128,8 @@ async function displayDailyWorkout() {
         
         if (workoutDocSnap) {
             const recommendedWorkout = workoutDocSnap.data();
+             // ✅ 제목을 HTML에 표시
+             document.getElementById("recommended-title").innerText = recommendedWorkout.title;
             recommendedWorkoutDiv.innerHTML = createVideoDetailHTML(recommendedWorkout);
             completeButton.style.display = 'block';
         } else {

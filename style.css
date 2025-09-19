@@ -10,26 +10,42 @@ body {
     padding-top: 50px;
 }
 
+h1 {
+    font-size: 1.5em;  /* 기본보다 작게: 예전엔 2em ~ 2.5em */
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+h3 {
+    font-size: 0.9em;
+}
+
+
 .container {
-    background-color: #fff;
-    padding: 2em;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
     width: 90%;
-    max-width: 600px;
+    max-width: 700px;
     text-align: center;
     box-sizing: border-box;
     position: relative;
 }
 
 h1 {
-    color: #2196F3; /* 파란색으로 변경 */
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 0.5em;
+    color: #2196F3;
+    padding-bottom: 0em;
     margin-top: 0;
 }
 
-h2, h3 {
+h2 {
+    color: #555;
+    margin-top: 0.5em; /* ✅ "화이팅 은지" 위로 붙이기 */
+}
+
+h3 {
     color: #555;
 }
 
@@ -50,20 +66,23 @@ input, select, button {
 
 button {
     cursor: pointer;
-    background-color: #2196F3; /* 파란색으로 변경 */
+    background-color: #2196F3;
     color: white;
     font-weight: bold;
 }
 
 button:hover {
-    background-color: #1976D2; /* 더 진한 파란색으로 변경 */
+    background-color: #1976D2;
 }
 
 #find-video-button, #complete-button {
     margin-top: 10px;
 }
 
-#video-list-display, #video-detail-display, #recommended-workout, #records-section {
+#video-list-display,
+#video-detail-display,
+#recommended-workout,
+#records-section {
     text-align: left;
     margin-top: 20px;
     width: 100%;
@@ -96,22 +115,27 @@ button:hover {
 
 .video-embed {
     width: 100%;
-    height: 315px;
+    aspect-ratio: 16 / 9;
+    height: auto;
     border: none;
     border-radius: 8px;
+    margin-top: 20px;
 }
 
-.small-logout-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: auto;
-    font-size: 0.8em;
-    padding: 5px 10px;
+#logout-button {
     background-color: #f44336;
+    color: white;
+    font-weight: bold;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 40px auto 20px;
+    display: block;
 }
 
-.small-logout-btn:hover {
+#logout-button:hover {
     background-color: #d32f2f;
 }
 
@@ -149,55 +173,64 @@ hr {
     font-weight: bold;
 }
 
-/* 추가된 운동 선택 기능 스타일 */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding-top: 50px;
-}
-
-.container {
-    background-color: #fff;
-    padding: 2em;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 600px;
-    text-align: center;
+/* ✅ 유튜브 제목 스타일 개선 */
+#recommended-title {
+    font-size: 0.85em;
+    font-weight: 400;
+    background-color: #f8f9fa;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    margin: 0.5em 0;
+    max-width: 100%;
     box-sizing: border-box;
-    position: relative;
+}
+/* 유튜브 제목 스타일 강제 적용 */
+#recommended-title {
+    font-size: 0.55em !important;
+    font-weight: 300 !important;
+    background-color: #f8f9fa;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: block;
+    margin: 0.5em 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+/* 제목과 영상 정보를 감싸는 박스 스타일 */
+.video-info-box {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 1em; /* 박스와 완료하기 버튼 사이 간격 */
+    text-align: left;
 }
 
-h1 {
-    color: #4CAF50;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 0.5em;
+/* 박스 안의 제목 스타일 */
+.video-info-box h4 {
+    font-size: 1.1em;
+    font-weight: bold;
     margin-top: 0;
+    margin-bottom: 8px;
 }
 
-h2, h3 {
+/* 박스 안의 설명(카테고리, 시간 등) 스타일 */
+.video-info-box p {
+    font-size: 0.9em;
+    margin: 0;
     color: #555;
 }
-
-select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-}
-
-.video-embed {
-    width: 100%;
-    height: 315px;
-    border: none;
+h5 {
+    font-size: 0.85em;
+    font-weight: 400;             /* ← 얇지만 선명하게 */
+    color: #212121;               /* ← 진한 회색 = 거의 검정 */
+    background-color: #f8f9fa;
+    padding: 10px 16px;
     border-radius: 8px;
-    margin-top: 20px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    margin-bottom: 10px;
 }

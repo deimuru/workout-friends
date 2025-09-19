@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>운동 챌린지 통합</title>
-    <link rel="stylesheet" href="combined_style.css">
+    <title>치파오👗 챌린지</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>운동 챌린지 통합 앱</h1>
-        <button id="logout-button" class="small-logout-btn" style="display:none;">로그아웃</button>
+        <h1>치파오👗 챌린지</h1>
 
         <div id="auth-section">
             <h2>로그인</h2>
@@ -24,9 +23,13 @@
             <h2>오늘도 화이팅 <span id="user-name"></span>!</h2>
 
             <div id="recommended-workout">
-                <h3>오늘의 추천 운동</h3>
-                <p>로딩 중...</p>
-            </div>
+    <h3>오늘의 추천 운동</h3>
+    <div class="video-info-box">
+        <h4 id="video-title"></h4>
+        <p id="video-description"></p>
+    </div>
+    <div id="video-player-container"></div>
+</div>
 
             <button id="complete-button" style="display:none;">✔️ 완료하기</button>
 
@@ -51,8 +54,11 @@
                 </select>
                 <div id="selected-workout-display" class="selected-workout-display"></div>
             </div>
+
+            <button id="logout-button" style="display:none;">로그아웃</button>
+
         </div>
     </div>
-    <script type="module" src="combined_script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
