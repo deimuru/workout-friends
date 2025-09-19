@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매일 운동 챌린지</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>매일 운동 챌린지</h1>
+        <button id="logout-button" class="small-logout-btn" style="display:none;">로그아웃</button>
+
+        <div id="auth-section">
+            <h2>로그인</h2>
+            <input type="email" id="email-input" placeholder="이메일">
+            <input type="text" id="nickname-input" placeholder="닉네임">
+            <input type="password" id="password-input" placeholder="비밀번호">
+            <button id="login-button">로그인</button>
+        </div>
+
+        <div id="main-app" style="display:none;">
+            <h2>오늘도 화이팅 <span id="user-name"></span>!</h2>
+
+            <div id="recommended-workout">
+                <h3>오늘의 추천 운동</h3>
+                <p>로딩 중...</p>
+            </div>
+            
+            <button id="complete-button" style="display:none;">✔️ 완료하기</button>
+
+            <hr>
+
+            <div id="records-section">
+                <h3>나의 운동 기록</h3>
+                <p>현재 <span id="streak-count">0</span>일 연속 성공</p>
+                <div id="calendar-container"></div>
+            </div>
+            
+            <hr>
+
+            <div id="filter-section">
+                <h3>다른 운동이 하고 싶다면?</h3>
+                <p>아래에서 재생목록과 영상을 선택해 주세요.</p>
+                
+                <select id="playlist-select">
+                    <option value="">재생목록 선택</option>
+                </select>
+                
+                <select id="video-select" style="display:none;">
+                    <option value="">영상 제목 선택</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
