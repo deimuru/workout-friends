@@ -15,11 +15,11 @@ h1 {
 }
 
 h2 {
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 h3 {
-    font-size: 0.9em;
+    font-size: 1.2em;
 }
 
 
@@ -225,8 +225,8 @@ hr {
 }
 /* h5 스타일 */
 h5 {
-    font-size: 1.2em;
-    font-weight: 800;
+    font-size: 0.7em;
+    font-weight: 600;
     color: #212121;
     background-color: #f8f9fa;
     padding: 10px 16px;
@@ -237,4 +237,50 @@ h5 {
     box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
     text-align: left; /* 텍스트 왼쪽 정렬 */
     margin-bottom: 10px;
+}
+/* 달력 네비게이션 스타일 */
+#calendar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+    user-select: none; /* 텍스트 선택 방지 */
+}
+
+#calendar-nav h4 {
+    margin: 0 15px; /* 좌우 버튼과의 간격 */
+    font-size: 0.9em;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+#calendar-nav button {
+    background: none;
+    border: none;
+    font-size: 0.5em; /* 아이콘 크기 */
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+#calendar-nav button:hover {
+    background-color: #f0f0f0;
+    border-radius: 50%;
+}
+
+/* 비활성화된 버튼 스타일 */
+#calendar-nav button:disabled {
+    color: #ccc; /* 회색으로 변경 */
+    cursor: default;
+    background: none;
+}
+/* 연속 및 총 성공 횟수 숫자 스타일 */
+#streak-count, #total-count {
+  font-size: inherit; /* 부모 요소의 글자 크기를 따라가도록 설정 */
+  font-weight: bold;  /* 굵은 글씨체 적용 */
+  color: #4c75e4;    /* 기존 주황색 색상 유지 */
+}
+/* 연속 성공 기록 가운데 정렬 */
+#streak-display {
+    text-align: center;
 }

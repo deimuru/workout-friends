@@ -36,10 +36,17 @@
             <hr>
 
             <div id="records-section">
-               <h3>나의 운동 기록</h3>
-                 <p>현재 <span id="streak-count">0</span>일 연속 성공</p>
-               <div id="calendar-container"></div>
-            </div>
+    <h3 id="streak-display">
+    오늘까지 <span id="streak-count">0</span>일 연속, 총 <span id="total-count">0</span>일 성공!
+</h3>
+    
+    <div id="calendar-nav">
+    <button id="prev-month-btn">&lt;</button>
+    <h4 id="calendar-title"></h4>
+    <button id="next-month-btn">&gt;</button>
+</div>
+    <div id="calendar-container"></div>
+</div>
 
             <hr>
 

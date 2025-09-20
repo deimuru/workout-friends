@@ -32,9 +32,18 @@ const logoutButton = document.getElementById('logout-button');
 const userNameElement = document.getElementById('user-name');
 const completeButton = document.getElementById('complete-button');
 const recommendedWorkoutDiv = document.getElementById('recommended-workout');
-const streakCountElement = document.getElementById('streak-count');
 const calendarContainer = document.getElementById('calendar-container');
 
+// ✅ [수정] streak-count와 total-count 요소를 각각 가져옴
+const streakCountElement = document.getElementById('streak-count');
+const totalCountElement = document.getElementById('total-count');
+
+const prevMonthBtn = document.getElementById('prev-month-btn');
+const nextMonthBtn = document.getElementById('next-month-btn');
+const calendarTitle = document.getElementById('calendar-title');
+
+let currentYear, currentMonth;
+let allCompletedDates = [];
 
 // 로그인 및 자동 회원가입 이벤트
 loginButton.addEventListener('click', () => {
@@ -82,7 +91,7 @@ function getYouTubeId(url) {
     return (match && match[2].length === 11) ? match[2] : null;
 }
 
-// ✅ [수정됨] 운동 영상 HTML 생성 함수 (제목 형식 변경)
+// 운동 영상 HTML 생성 함수
 function createVideoDetailHTML(video) {
     const videoId = getYouTubeId(video.url);
     if (!videoId) return `<p>잘못된 유튜브 주소입니다.</p>`;
@@ -94,7 +103,7 @@ function createVideoDetailHTML(video) {
     `;
 }
 
-// ✅ [수정됨] 오늘의 추천 운동을 하루에 하나만 고정해서 보여주는 함수
+// 오늘의 추천 운동을 하루에 하나만 고정해서 보여주는 함수
 async function displayDailyWorkout() {
     try {
         const today = new Date().toISOString().split('T')[0];
@@ -103,19 +112,16 @@ async function displayDailyWorkout() {
 
         let workoutDocSnap;
 
-        // 오늘 날짜의 추천 영상이 이미 지정되어 있는지 확인
         if (dailyWorkoutDocSnap.exists()) {
             const recommendedUrl = dailyWorkoutDocSnap.data().url;
             const workoutQuery = query(collection(db, "운동영상"), where("url", "==", recommendedUrl));
             const workoutQuerySnap = await getDocs(workoutQuery);
 
-            // 지정된 영상이 '운동영상' 컬렉션에 실제로 존재하는지 확인
             if (!workoutQuerySnap.empty) {
                 workoutDocSnap = workoutQuerySnap.docs[0];
             }
         }
         
-        // workoutDocSnap이 비어있다면 (오늘 추천 영상이 없거나, 있는데 DB에서 삭제된 경우)
         if (!workoutDocSnap) {
             const allWorkoutsRef = collection(db, "운동영상");
             const allWorkoutsSnap = await getDocs(allWorkoutsRef);
@@ -125,14 +131,12 @@ async function displayDailyWorkout() {
                 const randomIndex = Math.floor(Math.random() * workouts.length);
                 workoutDocSnap = workouts[randomIndex];
                 
-                // 새로 뽑은 랜덤 영상을 오늘 날짜의 추천 영상으로 저장 (또는 덮어쓰기)
                 await setDoc(dailyWorkoutDocRef, {
                     url: workoutDocSnap.data().url
                 });
             }
         }
         
-        // 최종적으로 추천할 영상이 있다면 화면에 표시
         if (workoutDocSnap) {
             const recommendedWorkout = workoutDocSnap.data();
             recommendedWorkoutDiv.innerHTML = createVideoDetailHTML(recommendedWorkout);
@@ -203,9 +207,9 @@ completeButton.addEventListener('click', async () => {
 });
 
 
-// 연속 성공 기록 및 캘린더를 불러오는 함수 (날짜 오류 수정 반영)
+// 연속 성공 및 총 성공 횟수, 캘린더를 불러오는 함수
 async function loadWorkoutHistory(userId) {
-    const completedDates = [];
+    allCompletedDates = [];
     let streakCount = 0;
 
     try {
@@ -213,20 +217,19 @@ async function loadWorkoutHistory(userId) {
         const querySnapshot = await getDocs(historyRef);
         
         querySnapshot.forEach(doc => {
-            completedDates.push(doc.id);
+            allCompletedDates.push(doc.id);
         });
         
         let tempDate = new Date();
         const todayString = tempDate.toISOString().split('T')[0];
 
-        // 오늘 운동을 아직 안했다면, 어제부터 카운트 시작
-        if (!completedDates.includes(todayString)) {
+        if (!allCompletedDates.includes(todayString)) {
             tempDate.setDate(tempDate.getDate() - 1);
         }
         
         while(true) {
             const dateString = tempDate.toISOString().split('T')[0];
-            if (completedDates.includes(dateString)) {
+            if (allCompletedDates.includes(dateString)) {
                 streakCount++;
                 tempDate.setDate(tempDate.getDate() - 1);
             } else {
@@ -234,8 +237,11 @@ async function loadWorkoutHistory(userId) {
             }
         }
         
+        // ✅ [수정] 연속 성공과 총 성공 횟수를 각각 업데이트
         streakCountElement.textContent = streakCount;
-        renderCalendar(completedDates);
+        totalCountElement.textContent = allCompletedDates.length;
+
+        renderCalendar(currentYear, currentMonth, allCompletedDates);
 
     } catch (error) {
         console.error("운동 기록 불러오기 중 오류 발생:", error);
@@ -243,12 +249,11 @@ async function loadWorkoutHistory(userId) {
 }
 
 
-// 캘린더 그리는 함수
-function renderCalendar(completedDates) {
+// 특정 년/월의 달력을 그리는 함수
+function renderCalendar(year, month, completedDates) {
     calendarContainer.innerHTML = '';
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
+    calendarTitle.textContent = `${year}년 ${month + 1}월`;
+
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const numDays = lastDay.getDate();
@@ -276,6 +281,26 @@ function renderCalendar(completedDates) {
 
     table += '</tr></tbody></table>';
     calendarContainer.innerHTML = table;
+
+    // ✅ [추가] 달력 렌더링 후 네비게이션 버튼 상태 업데이트
+    updateNavButtonState(year, month);
+}
+
+// ✅ [추가] 달력 네비게이션 버튼의 활성/비활성 상태를 업데이트하는 함수
+function updateNavButtonState(year, month) {
+    // 이전 버튼: 2025년 9월(month 8) 이전으로는 가지 못하게 비활성화
+    if (year < 2025 || (year === 2025 && month <= 8)) {
+        prevMonthBtn.disabled = true;
+    } else {
+        prevMonthBtn.disabled = false;
+    }
+
+    // 다음 버튼: 2028년 12월(month 11) 이후로는 가지 못하게 비활성화
+    if (year > 2028 || (year === 2028 && month >= 11)) {
+        nextMonthBtn.disabled = true;
+    } else {
+        nextMonthBtn.disabled = false;
+    }
 }
 
 // 로그인 상태 변경 감지
@@ -284,6 +309,10 @@ onAuthStateChanged(auth, async (user) => {
         authSection.style.display = 'none';
         mainApp.style.display = 'block';
         logoutButton.style.display = 'block';
+
+        const today = new Date();
+        currentYear = today.getFullYear();
+        currentMonth = today.getMonth();
 
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
@@ -304,6 +333,27 @@ onAuthStateChanged(auth, async (user) => {
         logoutButton.style.display = 'none';
     }
 });
+
+// 이전 달 버튼 클릭 이벤트
+prevMonthBtn.addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+    renderCalendar(currentYear, currentMonth, allCompletedDates);
+});
+
+// 다음 달 버튼 클릭 이벤트
+nextMonthBtn.addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    renderCalendar(currentYear, currentMonth, allCompletedDates);
+});
+
 
 // 추가: 영상 선택 기능
 const playlistSelect = document.getElementById('playlist-select');
