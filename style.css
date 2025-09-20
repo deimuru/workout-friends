@@ -223,14 +223,18 @@ hr {
     margin: 0;
     color: #555;
 }
+/* h5 스타일 */
 h5 {
-    font-size: 0.85em;
-    font-weight: 400;             /* ← 얇지만 선명하게 */
-    color: #212121;               /* ← 진한 회색 = 거의 검정 */
+    font-size: 1.2em;
+    font-weight: 800;
+    color: #212121;
     background-color: #f8f9fa;
     padding: 10px 16px;
     border-radius: 8px;
     border: 1px solid #ddd;
-    display: inline-block;
+    display: block; /* inline-block에서 block으로 변경 */
+    width: 100%; /* 전체 너비 사용 */
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
     margin-bottom: 10px;
 }

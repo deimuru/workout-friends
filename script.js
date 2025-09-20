@@ -82,19 +82,19 @@ function getYouTubeId(url) {
     return (match && match[2].length === 11) ? match[2] : null;
 }
 
-// 운동 영상 HTML 생성 함수
+// ✅ [수정됨] 운동 영상 HTML 생성 함수 (제목 형식 변경)
 function createVideoDetailHTML(video) {
     const videoId = getYouTubeId(video.url);
     if (!videoId) return `<p>잘못된 유튜브 주소입니다.</p>`;
     
     return `
-        <h5><strong>${video.category || ''}${video.length ? ' /' : ''}</strong>${video.length ? ' ' + video.length + '분' : ''} / ${video.title}</h5>
+        <h5>[오늘의 운동] '${video.category}' '${video.title}'</h5>
         <iframe class="video-embed" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
         <br>
     `;
 }
 
-// 오늘의 추천 운동을 보여주는 함수
+// ✅ [수정됨] 오늘의 추천 운동을 하루에 하나만 고정해서 보여주는 함수
 async function displayDailyWorkout() {
     try {
         const today = new Date().toISOString().split('T')[0];
@@ -102,15 +102,21 @@ async function displayDailyWorkout() {
         const dailyWorkoutDocSnap = await getDoc(dailyWorkoutDocRef);
 
         let workoutDocSnap;
+
+        // 오늘 날짜의 추천 영상이 이미 지정되어 있는지 확인
         if (dailyWorkoutDocSnap.exists()) {
             const recommendedUrl = dailyWorkoutDocSnap.data().url;
             const workoutQuery = query(collection(db, "운동영상"), where("url", "==", recommendedUrl));
             const workoutQuerySnap = await getDocs(workoutQuery);
 
-            workoutDocSnap = workoutQuerySnap.docs[0];
-
-        } else {
-            // 오늘 날짜에 추천 영상이 없으면 랜덤으로 하나 선택
+            // 지정된 영상이 '운동영상' 컬렉션에 실제로 존재하는지 확인
+            if (!workoutQuerySnap.empty) {
+                workoutDocSnap = workoutQuerySnap.docs[0];
+            }
+        }
+        
+        // workoutDocSnap이 비어있다면 (오늘 추천 영상이 없거나, 있는데 DB에서 삭제된 경우)
+        if (!workoutDocSnap) {
             const allWorkoutsRef = collection(db, "운동영상");
             const allWorkoutsSnap = await getDocs(allWorkoutsRef);
             
@@ -119,13 +125,14 @@ async function displayDailyWorkout() {
                 const randomIndex = Math.floor(Math.random() * workouts.length);
                 workoutDocSnap = workouts[randomIndex];
                 
-                // 랜덤으로 선택된 영상을 오늘 날짜의 추천 영상으로 저장
+                // 새로 뽑은 랜덤 영상을 오늘 날짜의 추천 영상으로 저장 (또는 덮어쓰기)
                 await setDoc(dailyWorkoutDocRef, {
                     url: workoutDocSnap.data().url
                 });
             }
         }
         
+        // 최종적으로 추천할 영상이 있다면 화면에 표시
         if (workoutDocSnap) {
             const recommendedWorkout = workoutDocSnap.data();
             recommendedWorkoutDiv.innerHTML = createVideoDetailHTML(recommendedWorkout);
@@ -196,7 +203,7 @@ completeButton.addEventListener('click', async () => {
 });
 
 
-// 연속 성공 기록 및 캘린더를 불러오는 함수
+// 연속 성공 기록 및 캘린더를 불러오는 함수 (날짜 오류 수정 반영)
 async function loadWorkoutHistory(userId) {
     const completedDates = [];
     let streakCount = 0;
@@ -210,6 +217,13 @@ async function loadWorkoutHistory(userId) {
         });
         
         let tempDate = new Date();
+        const todayString = tempDate.toISOString().split('T')[0];
+
+        // 오늘 운동을 아직 안했다면, 어제부터 카운트 시작
+        if (!completedDates.includes(todayString)) {
+            tempDate.setDate(tempDate.getDate() - 1);
+        }
+        
         while(true) {
             const dateString = tempDate.toISOString().split('T')[0];
             if (completedDates.includes(dateString)) {
@@ -290,14 +304,11 @@ onAuthStateChanged(auth, async (user) => {
         logoutButton.style.display = 'none';
     }
 });
-// 추가: 영상 선택 기능
 
+// 추가: 영상 선택 기능
 const playlistSelect = document.getElementById('playlist-select');
 const videoSelect = document.getElementById('video-select');
 const selectedWorkoutDisplay = document.getElementById('selected-workout-display');
-
-// 유튜브 영상 ID 추출 함수 (이미 선언됨)
-// function getYouTubeId(url) {...} // 중복 정의 피함
 
 function createManualVideoHTML(video) {
     const videoId = getYouTubeId(video.url);
