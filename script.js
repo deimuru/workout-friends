@@ -97,9 +97,8 @@ function createVideoDetailHTML(video) {
     if (!videoId) return `<p>잘못된 유튜브 주소입니다.</p>`;
     
     return `
-        <h5>[오늘의 운동] '${video.category}' '${video.title}'</h5>
+        <h5>[오늘의 운동] ${video.category} </h5>
         <iframe class="video-embed" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
-        <br>
     `;
 }
 
